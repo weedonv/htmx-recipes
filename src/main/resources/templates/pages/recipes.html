@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <title>My Recipes</title>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<div class="container recipes-list" th:fragment="recipes-list">
+    <h1>Recipes</h1>
+    <div th:each="recipe: ${recipes}" class="card replaceMe">
+        <div class="card-body">
+            <div class="d-flex">
+                <div>
+                    <h5 class="card-title mb-0" th:text="${recipe.name()}"/>
+                    <p class="card-text text-muted" th:text="${recipe.description()}"/>
+                    <p> Actions: </p>
+                    <button class="btn btn-outline-danger"
+                            hx-confirm = "Are you sure you want to delete this?"
+                            th:attr="hx-delete=@{/recipes/{id}(id=${recipe.id})}"
+                            hx-swap="outerHTML"
+                            hx-target="closest .replaceMe"
+                    > Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <form hx-post="/recipes" hx-trigger="submit" hx-target=".recipes-list">
+            <div class="form-group">
+                <label>Recipe Name</label>
+                <input type="text" class="form-control" name="name">
+            </div>
+            <div class="form-group">
+                <label>Recipe Description</label>
+                <input type="text" class="form-control" name="description">
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
