@@ -74,7 +74,7 @@ class RecipeControllerTest {
         mockMvc.perform(post("/recipes")
                         .contentType(APPLICATION_FORM_URLENCODED_VALUE)
                         .param("description", recipe.description()))
-                .andExpect(status().isCreated()) //TODO change response code
+                .andExpect(status().isOk())
                 .andExpect(content().string(not(containsString(recipe.name()))));
     }
 
